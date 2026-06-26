@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useGLTF, Float, Environment, ContactShadows, PresentationControls, useTexture, Center } from "@react-three/drei";
+import { useGLTF, Float, Environment, ContactShadows, OrbitControls, useTexture, Center } from "@react-three/drei";
 import { Suspense, useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -18,6 +18,7 @@ function SodaCan({ flavor, ...props }) {
   const primitiveRef = useRef();
   const { viewport } = useThree();
   const [renderedFlavor, setRenderedFlavor] = useState(flavor);
+  const [staticScale, setStaticScale] = useState(null);
 
   const blueTexture = useTexture("/assets/blue_base_color.jpg");
   const greenTexture = useTexture("/assets/green_base_color.jpg");
@@ -31,6 +32,14 @@ function SodaCan({ flavor, ...props }) {
       modelSize.current = size.y;
     }
   }, [scene]);
+
+  // Lock scale on first render to prevent jumps on mobile scroll
+  useEffect(() => {
+    if (!staticScale && modelSize.current > 0) {
+      const baseDim = Math.min(viewport.width, viewport.height);
+      setStaticScale((baseDim / modelSize.current) * 2.2);
+    }
+  }, [viewport.width, viewport.height, staticScale]);
 
   // Handle spin and flavor swap
   const spinY = useRef(0);
@@ -95,11 +104,7 @@ function SodaCan({ flavor, ...props }) {
     }
   });
 
-  // Calculate scale: fill the canvas, using the smaller dimension so the can is always big
-  const baseDim = Math.min(viewport.width, viewport.height);
-  const scale = modelSize.current > 0
-    ? (baseDim / modelSize.current) * 2.2
-    : 2.2;
+  const scale = staticScale || 2.2;
 
   return (
     <group {...props} ref={canRef} scale={scale} rotation={[0, Math.PI, 25 * Math.PI / 180]} dispose={null}>
@@ -153,16 +158,18 @@ export default function Scene({ flavor = 'green' }) {
           <pointLight position={[-10, -10, -10]} intensity={0.5} />
           
           <Suspense fallback={null}>
-            <PresentationControls 
-              global 
-              config={{ mass: 2, tension: 500 }} 
-              snap={{ mass: 4, tension: 1500 }} 
-              rotation={[0, 0, 0]} 
-              polar={[-Math.PI / 3, Math.PI / 3]} 
-              azimuth={[-Math.PI / 1.4, Math.PI / 2]}
-            >
-              <SodaCan flavor={flavor} />
-            </PresentationControls>
+            <OrbitControls 
+              enableZoom={false}
+              enablePan={false}
+              minDistance={10}
+              maxDistance={10}
+              minPolarAngle={Math.PI / 2 - 0.2}
+              maxPolarAngle={Math.PI / 2 + 0.2}
+              minAzimuthAngle={-Math.PI / 4}
+              maxAzimuthAngle={Math.PI / 4}
+              makeDefault
+            />
+            <SodaCan flavor={flavor} />
             
             {items.map((item, i) => (
               <FloatingItem 
