@@ -874,7 +874,8 @@ body.blue-theme {
         position: relative !important;
         order: 3 !important;
         width: 100% !important;
-        height: 460px !important;
+        height: 50vh !important;
+        max-height: 50vh !important;
         top: auto !important;
         left: auto !important;
         z-index: 5 !important;
@@ -885,7 +886,8 @@ body.blue-theme {
     .main-product-3d {
         position: absolute !important;
         width: 100vw !important;
-        height: 460px !important;
+        height: 50vh !important;
+        max-height: 50vh !important;
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
@@ -1119,8 +1121,8 @@ body.blue-theme {
 
 /* ========== SMALL PHONE (≤480px) ========== */
 @media (max-width: 480px) {
-    .hero-center { height: 420px !important; }
-    .main-product-3d { height: 420px !important; }
+    .hero-center { height: 50vh !important; max-height: 50vh !important; }
+    .main-product-3d { height: 50vh !important; max-height: 50vh !important; }
     .main-title, .side-title { font-size: clamp(2.2rem, 14vw, 3rem); }
     .description { font-size: 0.8rem; }
     .hero-left { gap: 0.6rem; }
@@ -1142,9 +1144,9 @@ body.blue-theme {
     }
 
     .carousel-cards {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        gap: 0.5rem;
+        padding-left: calc(50vw - var(--carousel-card-width) / 2) !important;
+        padding-right: calc(50vw - var(--carousel-card-width) / 2) !important;
+        gap: 1.5rem;
     }
     .card { padding-top: 3.5rem; }
     .card img { width: 100px; margin-top: -5.5rem; }
