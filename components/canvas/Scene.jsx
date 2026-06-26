@@ -96,8 +96,8 @@ function SodaCan({ flavor, ...props }) {
   });
 
   // Calculate target height responsively
-  const targetHeight = Math.min(viewport.height * 0.6, viewport.width * 0.85);
-  const scale = targetHeight / modelSize.current;
+  const targetHeight = Math.min(viewport.height * 0.85, viewport.width * 0.85);
+  const scale = (targetHeight / modelSize.current) * 2.2; // Adjusted scale multiplier
 
   return (
     <group {...props} ref={canRef} scale={scale} rotation={[0, Math.PI, 25 * Math.PI / 180]} dispose={null}>
