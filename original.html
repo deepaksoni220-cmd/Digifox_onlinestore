@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diet Soda | Pure Zero Refreshment</title>
+<meta name="description" content="Experience the crisp, clean taste of Diet Soda. Zero sugar, zero compromise.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;500&family=Manrope:wght@400;700&family=Galada&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+:root {
+    --bg-color: #0a0a0a;
+    --text-color: #ffffff;
+    --accent-color: #ffffff;
+    --muted-color: rgba(255, 255, 255, 0.7);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --font-main: 'Inter', sans-serif;
+    --font-heading: 'Galada', cursive;
+
+    /* Dynamic Background Variables */
+    --bg-inner: #0b8a78;
+    --bg-mid: #044e3b;
+    --bg-outer: #011411;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden; /* Remove scroll */
+}
+
+body {
+    background: var(--bg-outer);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    min-height: 100vh;
+}
+
+/* Fixed background via pseudo-element — avoids background-attachment:fixed repaint */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, var(--bg-inner) 0%, var(--bg-mid) 50%, var(--bg-outer) 100%);
+    z-index: -1;
+    transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: background;
+}
+
+body.blue-theme {
+    --bg-inner: #0b4f8a;
+    --bg-mid: #04294e;
+    --bg-outer: #010c14;
+}
+
+#bubbles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    contain: strict;
+}
+
+.bubble-img {
+    position: absolute;
+    pointer-events: none;
+}
+
+@keyframes floatUpImg {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% { opacity: 0.4; }
+    90% { opacity: 0.4; }
+    100% {
+        transform: translateY(-110vh) translateX(30px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4%;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    font-family: var(--font-heading);
+}
+
+.nav {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--glass-bg);
+    padding: 0.4rem;
+    border-radius: 100px;
+    border: 1px solid var(--glass-border);
+}
+
+.nav.glass {
+    position: relative;
+    background: rgba(10, 10, 10, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transform: translate3d(0, 0, 0);
+}
+.mobile-nav { display: none; }
+
+.nav-item {
+    font-family: 'Manrope', sans-serif;
+    color: var(--muted-color);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 100px;
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background: #fbcfe8;
+    color: #011d17;
+}
+
+.contact-btn {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 0.9rem 2rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+.contact-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: translateY(-2px);
+    box-shadow: none;
+}
+
+.shop-btn {
+    background: #fbcfe8;
+    color: #011d17;
+    border: none;
+    padding: 0.9rem 2rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.shop-btn:hover {
+    background: #f472b6;
+    transform: translateY(-2px);
+    box-shadow: none;
+}
+
+.shop-btn .shop-icon {
+    display: none;
+}
+
+
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4%;
+    padding-top: 5rem;
+}
+
+.hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch; /* Stretch columns to full height */
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    height: 100%;
+    position: relative;
+}
+
+/* Typography */
+.main-title,
+.side-title {
+    font-family: var(--font-heading);
+    font-size: clamp(5rem, 10vw, 12rem);
+    line-height: 0.8;
+    font-weight: 400;
+    text-transform: none;
+    white-space: nowrap;
+    color: white;
+    letter-spacing: normal;
+}
+
+.outline {
+    color: var(--text-color);
+}
+
+.leaves-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1; /* Even further behind */
+    transition: transform 0.1s ease-out;
+}
+
+.leaf {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    pointer-events: none;
+    z-index: -1;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+}
+
+.l1 { top: 10%; left: 15%; }
+.l2 { top: 40%; left: 80%; width: 140px; height: 140px; opacity: 0.4; }
+.l3 { top: 70%; left: 75%; width: 80px; height: 80px; }
+.l4 { top: 85%; left: 20%; width: 120px; height: 120px; opacity: 0.3; }
+
+.hero-left {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 6rem 0;
+    gap: 2rem;
+    z-index: 100;
+}
+
+@keyframes fadeInEntry {
+    to { opacity: 1; transform: none; }
+}
+
+.description {
+    color: var(--muted-color);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 400px;
+}
+
+.primary-btn {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.4rem 0.4rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 700;
+    cursor: pointer;
+    width: fit-content;
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+.primary-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: translateY(-3px);
+    box-shadow: none;
+}
+
+.plus-icon {
+    background: #fbcfe8;
+    color: #011d17;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    font-weight: 900;
+    line-height: 1;
+    padding-bottom: 2px; /* Compensate for baseline shift */
+    border: none;
+}
+
+.award-badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto; /* Push to bottom */
+}
+
+.award-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.award-text { display: flex; flex-direction: column; }
+.award-title { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--muted-color); }
+.award-subtitle { font-size: 0.85rem; font-weight: 600; }
+
+.hero-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeIn 1.5s ease-out 0.3s forwards, float 6s ease-in-out infinite;
+    pointer-events: none;
+    background: radial-gradient(circle at center, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+    overflow: visible !important;
+}
+
+@keyframes fadeIn { to { opacity: 1; } }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.main-product-3d {
+    width: 80vw;
+    height: 80vh;
+    outline: none;
+    --progress-bar-color: transparent;
+    --poster-color: transparent;
+    z-index: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    overflow: visible !important;
+}
+
+.main-product-3d[camera-controls] { pointer-events: auto; }
+
+.berries-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 110; /* Above text (100) and can (50) */
+    transition: transform 0.1s ease-out;
+}
+
+.berries-container-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0; /* Behind everything */
+    transition: transform 0.1s ease-out;
+}
+
+.berry {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    outline: none;
+    --progress-bar-color: transparent;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.berry.no-animation { animation: none !important; }
+
+.b1 { top: 25%; left: 30%; width: 220px; height: 220px; }
+.b2 { top: 60%; left: 42%; width: 100px; height: 100px; }
+.b3 { top: 30%; left: 62%; width: 250px; height: 250px; }
+.b4 { top: 15%; left: 48%; width: 140px; height: 140px; }
+.b5 { top: 75%; left: 20%; width: 120px; height: 120px; }
+.b6 { top: 45%; left: 75%; width: 180px; height: 180px; }
+.b7 { top: 15%; left: 40%; width: 80px; height: 80px; opacity: 0.7; }
+.b8 { top: 50%; left: 55%; width: 70px; height: 70px; opacity: 0.6; }
+.b9 { top: 80%; left: 35%; width: 75px; height: 75px; opacity: 0.7; }
+
+.hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    text-align: right;
+    height: 100%;
+    padding: 6rem 0;
+    z-index: 100;
+    width: 450px;
+    pointer-events: none;
+}
+
+@keyframes fadeInLeft {
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.product-carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-end;
+    pointer-events: auto; /* Enable interaction */
+}
+
+.carousel-cards { display: flex; gap: 1rem; }
+
+.card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 1rem;
+    padding-top: 5rem;
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 135px;
+    position: relative;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.card:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.card.active {
+    border-color: #fbcfe8;
+    border-width: 1px;
+    background: var(--glass-bg);
+    box-shadow: none;
+}
+
+.card img {
+    width: 140px;
+    height: auto;
+    margin-top: -8rem;
+    filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.5));
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    display: block;
+    will-change: transform;
+    pointer-events: none; /* Mouse passes through image to trigger card hover */
+}
+
+.card:hover img {
+    transform: translateY(-30px) rotate(-12deg) scale(1.15) !important;
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.7rem;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+.card-info span:first-child { font-weight: 600; }
+.card-info span:last-child { color: var(--muted-color); }
+
+.carousel-nav { display: flex; gap: 1rem; }
+
+.nav-arrow {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.nav-arrow:hover { background: rgba(255, 255, 255, 0.1); }
+
+.side-title { align-self: flex-end; text-align: right; }
+
+@keyframes shine {
+    from { transform: translateX(-100%) rotate(45deg); }
+    to { transform: translateX(200%) rotate(45deg); }
+}
+
+/* ---- SCROLLING SECTIONS ---- */
+.scrolling-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10rem 8%;
+    position: relative;
+    z-index: 10;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 100vh;
+}
+
+.section-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 4.5rem;
+    margin-bottom: 4rem;
+    color: var(--accent-color);
+}
+
+.text-center { text-align: center; }
+
+/* Ingredients Layout */
+.split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+}
+.text-block h3 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+}
+.text-block p {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--muted-color);
+}
+.image-block { text-align: center; }
+.image-block img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 20px;
+    filter: drop-shadow(0 30px 40px rgba(0,0,0,0.5));
+    transform: perspective(1000px) rotateY(-15deg);
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.image-block:hover img {
+    transform: perspective(1000px) rotateY(0deg) scale(1.02);
+}
+
+/* Benefits Grid */
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+}
+.benefit-card {
+    padding: 4rem 2.5rem;
+    border-radius: 24px;
+    text-align: center;
+    transition: transform 0.4s ease, background 0.4s ease;
+}
+.benefit-card:hover {
+    transform: translateY(-12px);
+    background: rgba(255, 255, 255, 0.12);
+}
+.benefit-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+.benefit-card h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+.benefit-card p {
+    font-size: 1.1rem;
+    color: var(--muted-color);
+    line-height: 1.6;
+}
+
+/* Reviews Slider */
+.reviews-slider {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 5rem) / 3); /* 3 items, 2 gaps of 2.5rem */
+    gap: 2.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 2rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+}
+.reviews-slider::-webkit-scrollbar {
+    height: 6px;
+}
+.reviews-slider::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 10px;
+}
+.review-card {
+    padding: 3rem 2.5rem;
+    border-radius: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    scroll-snap-align: start;
+}
+.stars {
+    color: #ffd700;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+}
+.review-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 2.5rem;
+}
+.reviewer {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* GSAP Reveal State */
+.gs-reveal {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* CSS Reveal State for Performance */
+.css-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    will-change: opacity, transform;
+}
+.css-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger delays for grid items */
+.benefits-grid > .css-reveal:nth-child(1) { transition-delay: 0.0s; }
+.benefits-grid > .css-reveal:nth-child(2) { transition-delay: 0.1s; }
+.benefits-grid > .css-reveal:nth-child(3) { transition-delay: 0.2s; }
+.benefits-grid > .css-reveal:nth-child(4) { transition-delay: 0.3s; }
+.benefits-grid > .css-reveal:nth-child(5) { transition-delay: 0.4s; }
+.benefits-grid > .css-reveal:nth-child(6) { transition-delay: 0.5s; }
+
+.reviews-slider > .css-reveal:nth-child(1) { transition-delay: 0.0s; }
+.reviews-slider > .css-reveal:nth-child(2) { transition-delay: 0.1s; }
+.reviews-slider > .css-reveal:nth-child(3) { transition-delay: 0.2s; }
+.reviews-slider > .css-reveal:nth-child(4) { transition-delay: 0.3s; }
+.reviews-slider > .css-reveal:nth-child(5) { transition-delay: 0.4s; }
+.reviews-slider > .css-reveal:nth-child(6) { transition-delay: 0.5s; }
+
+/* Footer */
+.footer {
+    padding: 4rem 5%;
+    margin-top: 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+}
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+}
+.footer-links {
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.footer-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+.footer-links a:hover { color: rgba(255, 255, 255, 0.5); }
+.copyright {
+    color: var(--muted-color);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+/* ========== TABLET (≤1200px) ========== */
+@media (max-width: 1200px) {
+    .main-product-3d { width: 100vw; height: 60vh; top: 40%; }
+    .hero-content {
+        flex-direction: column;
+        padding-top: 6rem;
+        align-items: center;
+        text-align: center;
+        justify-content: flex-start;
+        gap: 1rem;
+    }
+    .hero-left { padding: 2rem 0 1rem; align-items: center; gap: 1rem; }
+    .hero-right {
+        align-items: center;
+        text-align: center;
+        padding: 1rem 0;
+        justify-content: flex-start;
+        width: auto;
+    }
+    .description { text-align: center; }
+    .main-title, .side-title { font-size: clamp(3rem, 8vw, 5rem); text-align: center; white-space: normal; }
+    .side-title { align-self: center; }
+    .award-badge { margin-top: 1rem; justify-content: center; }
+    .product-carousel { align-items: center; }
+    .carousel-nav { justify-content: center; }
+}
+
+/* ========== MOBILE (≤768px) ========== */
+@media (max-width: 768px) {
+    body { overflow-y: auto; overflow-x: hidden; height: auto; }
+
+    /* ---- HEADER ---- */
+    .header {
+        padding: 0.7rem 4%;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        z-index: 500;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        left: 0 !important;
+        box-sizing: border-box !important;
+    }
+    .logo svg { width: 24px; height: 24px; }
+    .logo span { font-size: 1rem; }
+    .header > div { gap: 0.5rem !important; flex-shrink: 0; }
+    .contact-btn {
+        padding: 0;
+        width: 38px; height: 38px; min-width: 38px;
+        border-radius: 50%;
+        display: flex !important;
+        align-items: center; justify-content: center;
+        flex-shrink: 0;
+        background: rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.15);
+    }
+    .contact-btn .contact-text { display: none !important; }
+    .contact-btn .contact-icon { display: flex !important; }
+    .shop-btn {
+        padding: 0;
+        width: 38px; height: 38px; min-width: 38px;
+        border-radius: 50%;
+        display: flex !important;
+        align-items: center; justify-content: center;
+        flex-shrink: 0;
+        background: rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: white;
+    }
+    .shop-btn .shop-text { display: none !important; }
+    .shop-btn .shop-icon { display: flex !important; }
+    .cart-btn { width: 38px; height: 38px; min-width: 38px; flex-shrink: 0; }
+
+    /* Desktop nav hidden on mobile */
+    .desktop-nav { display: none !important; }
+
+    /* Mobile nav positioned above cards */
+    .mobile-nav.glass {
+        display: flex !important;
+        position: relative !important;
+        top: auto !important;
+        bottom: auto !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        width: max-content !important;
+        margin: 0 auto 1.5rem auto !important;
+        max-width: 94vw;
+        z-index: 10 !important;
+        gap: 0.15rem;
+        padding: 0.3rem 0.4rem;
+        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    .mobile-nav .nav-item { font-size: 0.68rem; padding: 0.35rem 0.55rem; }
+
+    /* ---- HERO LAYOUT ---- */
+    .hero {
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 0 5%;
+        padding-top: 0;
+        padding-bottom: 5rem; /* space for bottom nav dock */
+        align-items: flex-start;
+    }
+    .hero-content {
+        flex-direction: column;
+        padding-top: 6.5rem;
+        padding-bottom: 1rem;
+        align-items: center;
+        text-align: center;
+        gap: 0;
+        height: auto;
+    }
+
+    /* HERO LEFT: Title + description + CTA — comes first */
+    .hero-left {
+        order: 1;
+        padding: 1.2rem 0 0.5rem;
+        align-items: center;
+        gap: 0.8rem;
+        z-index: 10;
+    }
+
+    /* HERO CENTER: 3D Can — becomes inline block, NOT fixed */
+    .hero-center {
+        position: relative !important;
+        order: 2;
+        width: 100%;
+        height: 300px;
+        top: auto !important;
+        left: auto !important;
+        z-index: 5;
+        background: none;
+        overflow: visible !important;
+    }
+    .main-product-3d {
+        position: absolute !important;
+        width: 110vw !important;
+        height: 300px !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        overflow: visible !important;
+    }
+
+    /* ---- SCROLLING SECTIONS MOBILE ---- */
+    .scrolling-section { padding: 6rem 5%; min-height: auto; }
+    .section-title { font-size: 3rem; margin-bottom: 2.5rem; text-align: center; }
+    .split-layout { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+    .image-block { order: -1; } /* Image on top on mobile */
+    .image-block img { transform: none; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.4)); max-width: 80%; }
+    .benefits-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .benefit-card { padding: 2.5rem 1.5rem; }
+    .reviews-slider { 
+        grid-auto-columns: calc((100% - 1.5rem) / 2); /* 2 items on mobile */
+        gap: 1.5rem; 
+    }
+    .review-card { padding: 2rem 1.5rem; }
+
+    /* HERO RIGHT: Cards + side title — comes last */
+    .hero-right {
+        order: 3;
+        width: 100%;
+        padding: 0.5rem 0 1rem;
+        z-index: 10;
+        pointer-events: auto;
+        height: auto;
+    }
+
+    /* ---- TYPOGRAPHY ---- */
+    .main-title, .side-title {
+        font-size: clamp(2.8rem, 13vw, 3.8rem);
+        line-height: 0.85;
+        white-space: normal;
+    }
+    .description { font-size: 0.88rem; max-width: 90vw; }
+    .description br { display: none; }
+
+    /* ---- BERRIES: hide most, keep a few subtle ones ---- */
+    .berries-container, .berries-container-bg { opacity: 0.35; }
+    .berry { width: 45px !important; height: 45px !important; }
+    .b1 { width: 75px !important; height: 75px !important; }
+    .b3 { width: 85px !important; height: 85px !important; }
+    .b4, .b6 { width: 55px !important; height: 55px !important; }
+    .b7, .b8, .b9 { width: 35px !important; height: 35px !important; }
+
+    /* Leaves */
+    .leaves-container { opacity: 0.3; }
+    .leaf { width: 30px !important; height: 30px !important; }
+    .l2, .l4 { width: 45px !important; height: 45px !important; }
+
+    /* ---- CARDS ---- */
+    .product-carousel { margin-top: 2.5rem; }
+    .carousel-cards { justify-content: center; }
+    .card { width: 130px; padding: 0.8rem; padding-top: 4.2rem; border-radius: 20px; }
+    .card img { width: 120px; margin-top: -6.5rem; }
+    .card-info span:first-child { font-size: 0.7rem; }
+    .card-info span:last-child { font-size: 0.65rem; }
+    .carousel-nav { justify-content: center; }
+
+    /* Award badge */
+    .award-badge { gap: 0.6rem; margin-top: 0.5rem; }
+    .award-icon { width: 36px; height: 36px; border-radius: 10px; }
+    .award-icon svg { width: 18px; height: 18px; }
+    .award-title { font-size: 0.6rem; }
+    .award-subtitle { font-size: 0.72rem; }
+
+    /* ---- OVERLAYS ---- */
+    .checkout-content { flex-direction: column; gap: 1.5rem; }
+    .checkout-modal { padding: 1.5rem; width: 95vw; max-height: 85vh; overflow-y: auto; }
+    .checkout-summary { margin-bottom: 1rem; }
+    .contact-modal { padding: 1.5rem; width: 95vw; }
+    .panel-header h3 { font-size: 1.5rem; }
+    .panel-header { margin-bottom: 1rem; }
+    .cart-panel { padding: 1.5rem; width: 100vw; right: -100vw; }
+    .glass-input { padding: 0.8rem 1rem; font-size: 0.85rem; }
+}
+
+/* ========== SMALL PHONE (≤480px) ========== */
+@media (max-width: 480px) {
+    .hero-center { height: 250px; }
+    .main-product-3d { height: 250px !important; }
+    .main-title, .side-title { font-size: clamp(2.2rem, 14vw, 3rem); }
+    .description { font-size: 0.8rem; }
+    .hero-left { gap: 0.6rem; }
+    .primary-btn { font-size: 0.8rem; padding: 0.3rem 0.3rem 0.3rem 1.2rem; gap: 1rem; }
+    .plus-icon { width: 30px; height: 30px; font-size: 1rem; }
+
+    /* Tiny berries */
+    .berry { width: 35px !important; height: 35px !important; }
+    .b1 { width: 60px !important; height: 60px !important; }
+    .b3 { width: 65px !important; height: 65px !important; }
+    .b4, .b6 { width: 40px !important; height: 40px !important; }
+    .b7, .b8, .b9 { width: 25px !important; height: 25px !important; }
+    .leaf { width: 22px !important; height: 22px !important; }
+    .l2, .l4 { width: 35px !important; height: 35px !important; }
+
+    /* Cards */
+    .card { width: 115px; padding-top: 3.5rem; }
+    .card img { width: 100px; margin-top: -5.5rem; }
+    .carousel-cards { gap: 0.5rem; }
+
+    /* Bottom nav */
+    .mobile-nav.glass { padding: 0.25rem 0.3rem !important; margin-bottom: 1rem !important; }
+    .mobile-nav .nav-item { font-size: 0.62rem; padding: 0.3rem 0.45rem; }
+
+    .checkout-modal { padding: 1rem; border-radius: 18px; }
+    .contact-modal { padding: 1rem; border-radius: 18px; }
+}
+
+/* Overlay Styles */
+.overlay-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.overlay-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.glass {
+    background: rgba(10, 10, 10, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.cart-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.cart-btn:hover { background: rgba(255, 255, 255, 0.1); }
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #fbcfe8;
+    color: #011d17;
+    font-size: 0.7rem;
+    font-weight: 800;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cart-badge.has-items { transform: scale(1); }
+
+.cart-panel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100vh;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    pointer-events: none;
+}
+
+/* cart-panel mobile sizing handled in main @media blocks */
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.panel-header h3 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-btn:hover { color: white; }
+
+.cart-items {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.8rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cart-item img {
+    width: 50px;
+    height: auto;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+}
+
+.cart-item-details { flex: 1; display: flex; flex-direction: column; }
+.cart-item-title { font-weight: 600; font-size: 0.9rem; }
+.cart-item-price { color: var(--muted-color); font-size: 0.8rem; }
+
+.cart-qty {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--glass-bg);
+    border-radius: 100px;
+    padding: 0.2rem 0.5rem;
+}
+
+.qty-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.cart-footer {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.checkout-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 900px;
+    max-width: 95vw;
+    max-height: 90vh;
+    border-radius: 24px;
+    z-index: 1001;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.checkout-content {
+    display: flex;
+    gap: 3rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.checkout-form { flex: 1; display: flex; flex-direction: column; gap: 1rem; }
+.checkout-summary { flex: 0.8; background: rgba(0,0,0,0.2); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; }
+
+.input-group { width: 100%; margin-bottom: 0.8rem; }
+
+.glass-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    color: white;
+    font-family: var(--font-main);
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.glass-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 3px rgba(251, 207, 232, 0.2);
+}
+
+.contact-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 500px;
+    max-width: 95vw;
+    border-radius: 24px;
+    z-index: 1001;
+    padding: 2.5rem;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Shop Modal & Product Showcase */
+.shop-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 1200px;
+    max-width: 95vw;
+    height: 85vh;
+    max-height: 90vh;
+    border-radius: 28px;
+    z-index: 1001;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.shop-grid-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.shop-grid-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.shop-grid-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+
+.shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+.shop-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 1.5rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    backdrop-filter: blur(10px);
+}
+
+.shop-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.shop-card-img-container {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    position: relative;
+}
+
+.shop-card-img {
+    height: 150px;
+    width: auto;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform;
+}
+
+.shop-card:hover .shop-card-img {
+    transform: translateY(-12px) rotate(-8deg) scale(1.1);
+}
+
+/* Color filters for premium flavor can variants */
+.hue-classic {
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+}
+.hue-blue {
+    filter: brightness(0.9) drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+}
+.hue-berry {
+    filter: hue-rotate(240deg) drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+}
+.hue-citrus {
+    filter: hue-rotate(60deg) drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+}
+.hue-tropical {
+    filter: hue-rotate(150deg) drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+}
+
+.shop-card-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.shop-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: white;
+}
+
+.shop-card-desc {
+    font-size: 0.8rem;
+    color: var(--muted-color);
+    line-height: 1.4;
+    margin-bottom: 1.2rem;
+    flex-grow: 1;
+}
+
+.shop-card-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.shop-card-price {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: white;
+}
+
+.shop-add-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 0.5rem 1.1rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.shop-add-btn:hover {
+    background: #fbcfe8;
+    color: #011d17;
+    border-color: #fbcfe8;
+    transform: scale(1.05);
+}
+
+/* Mobile responsive styling for the shop modal */
+@media (max-width: 768px) {
+    .shop-modal {
+        padding: 1.5rem;
+        width: 95vw;
+        height: 85vh;
+        border-radius: 20px;
+    }
+    .shop-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+    .shop-card {
+        flex-direction: row;
+        text-align: left;
+        padding: 1rem;
+        align-items: center;
+        gap: 1rem;
+    }
+    .shop-card-img-container {
+        height: 100px;
+        width: 70px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+    .shop-card-img {
+        height: 90px;
+    }
+    .shop-card:hover .shop-card-img {
+        transform: translateY(-5px) rotate(-5deg) scale(1.05);
+    }
+    .shop-card-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .shop-card-title {
+        font-size: 1rem;
+        margin-bottom: 0.2rem;
+    }
+    .shop-card-desc {
+        font-size: 0.75rem;
+        margin-bottom: 0.6rem;
+    }
+    .shop-card-footer {
+        justify-content: space-between;
+    }
+    .shop-card-price {
+        font-size: 1rem;
+    }
+    .shop-add-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div id="bubbles-container"></div>
+
+<header class="header">
+    <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+            <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span>Soda</span>
+    </div>
+    <nav class="nav glass desktop-nav">
+        <a href="#home" class="nav-item active">Home</a>
+        <a href="#ingredients" class="nav-item">Ingredients</a>
+        <a href="#benefits" class="nav-item">Benefits</a>
+        <a href="#reviews" class="nav-item">Reviews</a>
+    </nav>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+        <button class="shop-btn" id="header-shop-btn">
+            <span class="shop-text">Shop Now</span>
+            <svg class="shop-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+        </button>
+        <button class="cart-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span class="cart-badge">0</span>
+        </button>
+        <button class="contact-btn">
+            <span class="contact-text">Contact Us</span>
+            <svg class="contact-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        </button>
+    </div>
+</header>
+
+<main id="home" class="hero">
+    <div class="hero-content">
+        <div class="leaves-container">
+            <model-viewer class="leaf l1" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/leaves.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="45deg 75deg 105%"></model-viewer>
+            <model-viewer class="leaf l2" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/leaves.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="-30deg 60deg 105%"></model-viewer>
+            <model-viewer class="leaf l3" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/leaves.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="120deg 85deg 105%"></model-viewer>
+            <model-viewer class="leaf l4" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/leaves.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="10deg 45deg 105%"></model-viewer>
+        </div>
+
+        <div class="hero-left">
+            <h1 class="main-title large-animation-1">
+                <span class="outline">Pure</span><br>
+                Zero
+            </h1>
+            <p class="description">
+                Unleash the crisp taste of zero sugar. <br>
+                Refreshment redefined in every bubble — <br>
+                all in one sleek design.
+            </p>
+            <div class="cta-group">
+                <button class="primary-btn">
+                    Shop Now
+                    <span class="plus-icon">+</span>
+                </button>
+            </div>
+            <div class="award-badge">
+                <div class="award-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 15L15 18L19 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="award-text">
+                    <span class="award-title">DESIGN AWARDS</span>
+                    <span class="award-subtitle">PREMIUM BEVERAGE 2025</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="berries-container-bg">
+            <model-viewer class="berry b7" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="-20deg 110deg 105%"></model-viewer>
+            <model-viewer class="berry b8" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="160deg 45deg 105%"></model-viewer>
+            <model-viewer class="berry b9" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="45deg 20deg 105%"></model-viewer>
+        </div>
+
+        <div class="hero-center">
+            <model-viewer id="product-model" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/deit_soda2.glb" alt="Diet Soda 3D Model" camera-controls
+                disable-zoom shadow-intensity="0" environment-image="neutral" exposure="1.5"
+                interaction-prompt="none" camera-orbit="0deg 90deg 380%" field-of-view="30deg"
+                orientation="0deg 0deg 25deg"
+                class="main-product-3d">
+            </model-viewer>
+        </div>
+
+        <div class="berries-container">
+            <model-viewer class="berry b1" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="45deg 120deg 105%"></model-viewer>
+            <model-viewer class="berry b2" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="-120deg 45deg 105%"></model-viewer>
+            <model-viewer class="berry b3" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="200deg 90deg 105%"></model-viewer>
+            <model-viewer class="berry b4" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="10deg 20deg 105%"></model-viewer>
+            <model-viewer class="berry b5" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="-45deg 160deg 105%"></model-viewer>
+            <model-viewer class="berry b6" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="80deg 75deg 105%"></model-viewer>
+        </div>
+
+        <div class="hero-right">
+            <nav class="nav glass mobile-nav">
+                <a href="#home" class="nav-item active">Home</a>
+                <a href="#ingredients" class="nav-item">Ingredients</a>
+                <a href="#benefits" class="nav-item">Benefits</a>
+                <a href="#reviews" class="nav-item">Reviews</a>
+            </nav>
+            <div class="product-carousel">
+                <div class="carousel-cards">
+                    <div class="card active" data-flavor="classic">
+                        <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Green%20Soda.png" alt="Diet Classic">
+                        <div class="card-info">
+                            <span>Diet Classic</span>
+                            <span>$2.99</span>
+                        </div>
+                    </div>
+                    <div class="card" data-flavor="blue">
+                        <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Blue%20Soda.png" alt="Zero Lime" style="filter: brightness(0.7);">
+                        <div class="card-info">
+                            <span>Zero Lime</span>
+                            <span>$2.99</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <button class="nav-arrow">←</button>
+                    <button class="nav-arrow">→</button>
+                </div>
+            </div>
+            <h2 class="side-title large-animation-1">
+                <span class="outline">Refreshingly</span><br>
+                Clean
+            </h2>
+        </div>
+    </div>
+</main>
+
+<section id="ingredients" class="scrolling-section">
+    <div class="section-content">
+        <h2 class="section-title gs-reveal">Pure Ingredients</h2>
+        <div class="split-layout">
+            <div class="text-block gs-reveal">
+                <h3>Amazonian Guaraná</h3>
+                <p>Sourced directly from the Amazon basin, bringing you natural energy and authentic flavor without the sugar crash.</p>
+                <ul style="margin-top: 1.8rem; list-style: none; display: flex; flex-direction: column; gap: 1rem; font-size: 1.1rem; color: var(--muted-color);">
+                    <li><span style="color: var(--accent-color); margin-right: 12px;">✓</span> 100% Organic & Ethically Sourced</li>
+                    <li><span style="color: var(--accent-color); margin-right: 12px;">✓</span> Rich in natural antioxidants</li>
+                    <li><span style="color: var(--accent-color); margin-right: 12px;">✓</span> Smooth, enduring energy lift</li>
+                    <li><span style="color: var(--accent-color); margin-right: 12px;">✓</span> Zero artificial preservatives</li>
+                </ul>
+            </div>
+            <div class="image-block gs-reveal">
+                <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Blue%20Soda.png" alt="Pure Zero Beverage">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="benefits" class="scrolling-section">
+    <div class="section-content">
+        <h2 class="section-title text-center css-reveal">Why Pure Zero?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card glass css-reveal">
+                <div class="benefit-icon">✨</div>
+                <h3>Zero Sugar</h3>
+                <p>Sweetened naturally. Experience full flavor with absolutely zero sugar or artificial aftertaste. Perfect for guilt-free daily hydration.</p>
+            </div>
+            <div class="benefit-card glass css-reveal">
+                <div class="benefit-icon">⚡</div>
+                <h3>Natural Energy</h3>
+                <p>Powered by Amazonian Guaraná to give you a clean, lasting energy boost throughout the day without the sudden caffeine crash.</p>
+            </div>
+            <div class="benefit-card glass css-reveal">
+                <div class="benefit-icon">🌿</div>
+                <h3>Clean Crisp Taste</h3>
+                <p>A refreshing, light profile that dances on your palate. Perfect for any occasion, from intense workouts to evening dinner parties.</p>
+            </div>
+            <div class="benefit-card glass css-reveal">
+                <div class="benefit-icon">💎</div>
+                <h3>Premium Quality</h3>
+                <p>Crafted with the finest, ethically-sourced ingredients to deliver a luxurious, top-tier beverage experience with every sip.</p>
+            </div>
+            <div class="benefit-card glass css-reveal">
+                <div class="benefit-icon">🌍</div>
+                <h3>Eco-Friendly</h3>
+                <p>Our cans are 100% recyclable. We are committed to a zero-carbon footprint and sustainable manufacturing processes.</p>
+            </div>
+            <div class="benefit-card glass css-reveal">
+                <div class="benefit-icon">🍎</div>
+                <h3>Essential Vitamins</h3>
+                <p>Fortified with essential B-vitamins and antioxidants to support your immune system and overall well-being.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="reviews" class="scrolling-section">
+    <div class="section-content">
+        <h2 class="section-title css-reveal text-center">The Verdict</h2>
+        <div class="reviews-slider">
+            <div class="review-card glass css-reveal">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"The crispest diet soda I've ever tasted. The natural guarana kick is exactly what I need in the afternoon."</p>
+                <span class="reviewer">— Priya S.</span>
+            </div>
+            <div class="review-card glass css-reveal">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"Finally, a zero sugar drink that actually tastes premium. The branding is stunning, but the taste is even better."</p>
+                <span class="reviewer">— Rahul V.</span>
+            </div>
+            <div class="review-card glass css-reveal">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"A complete game-changer. The subtle berry notes mixed with the crisp carbonation make this my daily go-to."</p>
+                <span class="reviewer">— Ananya D.</span>
+            </div>
+            <div class="review-card glass css-reveal">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"I stopped drinking regular soda months ago, but this brought me back. It’s absolutely delicious and gives me a clean energy boost."</p>
+                <span class="reviewer">— Arjun K.</span>
+            </div>
+            <div class="review-card glass css-reveal">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"The glassmorphism-inspired can design matches the premium taste perfectly. It's my favorite drink to serve at gatherings."</p>
+                <span class="reviewer">— Neha R.</span>
+            </div>
+            <div class="review-card glass css-reveal">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"I love that there's no caffeine crash. It keeps me alert during long coding sessions without any weird aftertastes."</p>
+                <span class="reviewer">— Vikram M.</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span>Pure Zero</span>
+        </div>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#ingredients">Ingredients</a>
+            <a href="#benefits">Benefits</a>
+            <a href="#reviews">Reviews</a>
+        </div>
+        <div class="footer-legal-links" style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem;">
+            <a href="#" id="footer-contact-link" style="color: var(--muted-color); text-decoration: none; font-size: 0.85rem; transition: color 0.3s;">Contact Us</a>
+            <a href="#" id="footer-privacy-link" style="color: var(--muted-color); text-decoration: none; font-size: 0.85rem; transition: color 0.3s;">Privacy Policy</a>
+            <a href="#" id="footer-shipping-link" style="color: var(--muted-color); text-decoration: none; font-size: 0.85rem; transition: color 0.3s;">Shipping Policy</a>
+            <a href="#" id="footer-returns-link" style="color: var(--muted-color); text-decoration: none; font-size: 0.85rem; transition: color 0.3s;">Returns & Refunds</a>
+        </div>
+        <p class="copyright">© 2026 Pure Zero Beverages. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Overlays -->
+<div class="overlay-backdrop" id="overlay-backdrop"></div>
+
+<!-- Cart Side Panel -->
+<div class="cart-panel glass" id="cart-panel">
+    <div class="panel-header">
+        <h3>Your Cart</h3>
+        <button class="close-btn" id="close-cart">✕</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+        <!-- Cart items injected by JS -->
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>Total</span>
+            <span id="cart-total-price">$0.00</span>
+        </div>
+        <button class="primary-btn checkout-btn" id="go-to-checkout" style="width: 100%; justify-content: center;">
+            Proceed to Checkout
+        </button>
+    </div>
+</div>
+
+<!-- Checkout Modal -->
+<div class="checkout-modal glass" id="checkout-modal">
+    <div class="panel-header">
+        <h3>Checkout</h3>
+        <button class="close-btn" id="close-checkout">✕</button>
+    </div>
+    <div class="checkout-content">
+        <div class="checkout-form">
+            <h4 style="margin-bottom: 1rem;">Shipping Information</h4>
+            <div class="input-group">
+                <input type="text" placeholder="Full Name" class="glass-input">
+            </div>
+            <div class="input-group">
+                <input type="email" placeholder="Email Address" class="glass-input">
+            </div>
+            <div class="input-group">
+                <input type="text" placeholder="Shipping Address" class="glass-input">
+            </div>
+            <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">Payment Details</h4>
+            <div class="input-group">
+                <input type="text" placeholder="Card Number" class="glass-input">
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <div class="input-group" style="flex: 1;">
+                    <input type="text" placeholder="MM/YY" class="glass-input">
+                </div>
+                <div class="input-group" style="flex: 1;">
+                    <input type="text" placeholder="CVC" class="glass-input">
+                </div>
+            </div>
+            <button class="primary-btn" id="pay-now-btn" style="width: 100%; justify-content: center; margin-top: 1rem;">
+                Pay Now
+            </button>
+        </div>
+        <div class="checkout-summary">
+            <h4 style="margin-bottom: 1rem;">Order Summary</h4>
+            <div id="checkout-items"></div>
+            <div class="cart-total" style="margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--glass-border);">
+                <span>Total</span>
+                <span id="checkout-total-price">$0.00</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Us Modal -->
+<div class="contact-modal glass" id="contact-modal">
+    <div class="panel-header">
+        <h3>Contact Us</h3>
+        <button class="close-btn" id="close-contact">✕</button>
+    </div>
+    <div class="contact-form">
+        <p style="color: var(--muted-color); margin-bottom: 1.5rem; font-size: 0.9rem;">We'd love to hear from you. Drop us a line!</p>
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; color: var(--accent-color);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            <span style="font-weight: 700;">WhatsApp: +1 (555) 123-4567</span>
+        </div>
+        <div class="input-group">
+            <input type="text" placeholder="Name" class="glass-input">
+        </div>
+        <div class="input-group">
+            <input type="email" placeholder="Email" class="glass-input">
+        </div>
+        <div class="input-group">
+            <textarea placeholder="Message" class="glass-input" rows="4"></textarea>
+        </div>
+        <button class="primary-btn" id="send-message-btn" style="width: 100%; justify-content: center;">
+            Send Message
+        </button>
+    </div>
+</div>
+
+<!-- Policy Modal -->
+<div class="contact-modal glass" id="policy-modal" style="max-width: 600px; width: 90vw;">
+    <div class="panel-header">
+        <h3 id="policy-title">Policy</h3>
+        <button class="close-btn" id="close-policy">✕</button>
+    </div>
+    <div class="contact-form" style="max-height: 60vh; overflow-y: auto; padding-right: 1rem;">
+        <div id="policy-content" style="color: var(--text-color); font-size: 0.95rem; line-height: 1.6; display: flex; flex-direction: column; gap: 1rem;">
+            <!-- Content injected via JS -->
+        </div>
+    </div>
+</div>
+
+<!-- Shop Modal -->
+<div class="shop-modal glass" id="shop-modal">
+    <div class="panel-header">
+        <h3>Pure Zero Collection</h3>
+        <button class="close-btn" id="close-shop">✕</button>
+    </div>
+    <div class="shop-grid-container">
+        <div class="shop-grid">
+            <!-- Product 1 -->
+            <div class="shop-card">
+                <div class="shop-card-img-container">
+                    <img class="shop-card-img hue-classic" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Green%20Soda.png" alt="Diet Classic">
+                </div>
+                <div class="shop-card-content">
+                    <h4 class="shop-card-title">Diet Classic</h4>
+                    <p class="shop-card-desc">The original crisp recipe. Natural energy from Amazonian Guaraná with zero sugar.</p>
+                    <div class="shop-card-footer">
+                        <span class="shop-card-price">$2.99</span>
+                        <button class="shop-add-btn" onclick="addToCart('classic', 2.99, this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="shop-card">
+                <div class="shop-card-img-container">
+                    <img class="shop-card-img hue-blue" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Blue%20Soda.png" alt="Zero Lime">
+                </div>
+                <div class="shop-card-content">
+                    <h4 class="shop-card-title">Zero Lime</h4>
+                    <p class="shop-card-desc">Zesty, refreshing twist of lime that dances on your palate with zero compromise.</p>
+                    <div class="shop-card-footer">
+                        <span class="shop-card-price">$2.99</span>
+                        <button class="shop-add-btn" onclick="addToCart('blue', 2.99, this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="shop-card">
+                <div class="shop-card-img-container">
+                    <img class="shop-card-img hue-berry" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Green%20Soda.png" alt="Berry Blush">
+                </div>
+                <div class="shop-card-content">
+                    <h4 class="shop-card-title">Berry Blush</h4>
+                    <p class="shop-card-desc">A premium blend of wild forest berries and crisp bubbles for a sweet, vibrant lift.</p>
+                    <div class="shop-card-footer">
+                        <span class="shop-card-price">$2.99</span>
+                        <button class="shop-add-btn" onclick="addToCart('berry', 2.99, this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 4 -->
+            <div class="shop-card">
+                <div class="shop-card-img-container">
+                    <img class="shop-card-img hue-citrus" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Green%20Soda.png" alt="Citrus Burst">
+                </div>
+                <div class="shop-card-content">
+                    <h4 class="shop-card-title">Citrus Burst</h4>
+                    <p class="shop-card-desc">An energizing fusion of natural orange and tangerine essences to refresh your day.</p>
+                    <div class="shop-card-footer">
+                        <span class="shop-card-price">$2.99</span>
+                        <button class="shop-add-btn" onclick="addToCart('citrus', 2.99, this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 5 -->
+            <div class="shop-card">
+                <div class="shop-card-img-container">
+                    <img class="shop-card-img hue-tropical" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Blue%20Soda.png" alt="Tropical Passion">
+                </div>
+                <div class="shop-card-content">
+                    <h4 class="shop-card-title">Tropical Passion</h4>
+                    <p class="shop-card-desc">A sunny getaway of mango, passionfruit, and pineapple flavors with clean energy.</p>
+                    <div class="shop-card-footer">
+                        <span class="shop-card-price">$2.99</span>
+                        <button class="shop-add-btn" onclick="addToCart('tropical', 2.99, this)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<svg style="position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none;">
+    <filter id="frosted">
+        <feTurbulence type="fractalNoise" baseFrequency="0.0125" numOctaves="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="80" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+</svg>
+<!-- Preload berry models via link tags instead of hidden model-viewers -->
+<link rel="prefetch" href="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/blueberry.glb" as="fetch" crossorigin>
+<link rel="prefetch" href="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" as="fetch" crossorigin>
+
+<script>
+const modelViewer = document.querySelector('#product-model');
+const berriesFG = document.querySelector('.berries-container');
+const berriesBG = document.querySelector('.berries-container-bg');
+const leavesBG = document.querySelector('.leaves-container');
+const allBerries = document.querySelectorAll('.berry');
+const cards = document.querySelectorAll('.card');
+let isSwitching = false;
+let switchSpin = 0;
+let blueTexture = null;
+let greenTexture = null;
+
+// Preload textures & Warm up shaders
+modelViewer.addEventListener('load', async () => {
+    try {
+        blueTexture = await modelViewer.createTexture('https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/blue%20base%20color.jpg');
+        greenTexture = await modelViewer.createTexture('https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/green%20base%20color.jpg');
+
+        // Shader Warm-up: Briefly apply textures to compile shaders
+        if (modelViewer.model) {
+            const material = modelViewer.model.materials[0];
+            if (material && material.pbrMetallicRoughness.baseColorTexture) {
+                // Apply blue
+                material.pbrMetallicRoughness.baseColorTexture.setTexture(blueTexture);
+                await new Promise(r => requestAnimationFrame(r));
+                // Apply green back
+                material.pbrMetallicRoughness.baseColorTexture.setTexture(greenTexture);
+            }
+        }
+    } catch (e) { console.error("Texture preload failed", e); }
+});
+
+cards.forEach(card => {
+    card.addEventListener('click', () => {
+        if (isSwitching) return;
+        cards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        const flavor = card.dataset.flavor;
+        switchFlavor(flavor);
+    });
+});
+
+async function switchFlavor(flavor) {
+    if (isSwitching) return;
+    isSwitching = true;
+    const body = document.body;
+    const berries = document.querySelectorAll('.berry');
+    const heroCenter = document.querySelector('.hero-center');
+
+    // 1. Background Animation
+    const targetColors = flavor === 'blue' ?
+        { inner: '#0b4f8a', mid: '#04294e', outer: '#010c14' } :
+        { inner: '#0b8a78', mid: '#044e3b', outer: '#011411' };
+
+    gsap.to(body, {
+        '--bg-inner': targetColors.inner,
+        '--bg-mid': targetColors.mid,
+        '--bg-outer': targetColors.outer,
+        duration: 1.5,
+        ease: 'power2.inOut'
+    });
+
+    // 2. Can Spin Animation (Simple 360 spin + blur with back settle)
+    const spinObj = { val: 0, blur: 0 };
+    gsap.to(spinObj, {
+        val: 360,
+        blur: 15,
+        duration: 0.6,
+        ease: "power2.in",
+        onUpdate: () => {
+            switchSpin = spinObj.val;
+            modelViewer.style.filter = `blur(${spinObj.blur}px)`;
+        },
+        onComplete: async () => {
+            // SWAP at peak
+            if (flavor === 'blue') {
+                body.classList.add('blue-theme');
+                if (modelViewer.model && blueTexture) {
+                    modelViewer.model.materials.forEach(material => {
+                        if (material.pbrMetallicRoughness.baseColorTexture) {
+                            material.pbrMetallicRoughness.baseColorTexture.setTexture(blueTexture);
+                        }
+                    });
+                }
+            } else {
+                body.classList.remove('blue-theme');
+                if (modelViewer.model && greenTexture) {
+                    modelViewer.model.materials.forEach(material => {
+                        if (material.pbrMetallicRoughness.baseColorTexture) {
+                            material.pbrMetallicRoughness.baseColorTexture.setTexture(greenTexture);
+                        }
+                    });
+                }
+            }
+
+            gsap.to(spinObj, {
+                val: 720,
+                blur: 0,
+                duration: 1.5,
+                ease: "back.out(0.7)",
+                onUpdate: () => {
+                    switchSpin = spinObj.val;
+                    modelViewer.style.filter = `blur(${spinObj.blur}px)`;
+                },
+                onComplete: () => {
+                    switchSpin = 0;
+                    modelViewer.style.filter = 'none';
+                }
+            });
+        }
+    });
+
+    // 3. Berries "Hide & Reveal" with Dynamic Positioning
+    let completedBerries = 0;
+    berries.forEach((berry, i) => {
+        const bW = berry.offsetWidth / 2;
+        const bH = berry.offsetHeight / 2;
+        const centerX = (window.innerWidth / 2 - berry.offsetLeft - bW);
+        const centerY = (window.innerHeight / 2 - berry.offsetTop - bH);
+
+        const startAngle = parseFloat(berry.dataset.angle) || 0;
+        const currentBaseX = parseFloat(berry.dataset.baseX) || 0;
+        const currentBaseY = parseFloat(berry.dataset.baseY) || 0;
+
+        // New random target position - Increased range for visibility
+        const nextBaseX = (Math.random() - 0.5) * 200;
+        const nextBaseY = (Math.random() - 0.5) * 200;
+
+        gsap.set(berry, {
+            rotation: startAngle,
+            x: currentBaseX,
+            y: currentBaseY
+        });
+
+        const berryTl = gsap.timeline();
+
+        berryTl.to(berry, {
+            x: centerX,
+            y: centerY,
+            rotation: startAngle + 45,
+            scale: 0.1,
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.in",
+            onComplete: () => {
+                berry.src = flavor === 'blue' ? 'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/blueberry.glb' : 'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb';
+                heroCenter.style.zIndex = 50;
+            }
+        })
+        .to(berry, {
+            duration: 0.3
+        })
+        .to(berry, {
+            onStart: () => {
+                heroCenter.style.zIndex = 1;
+            },
+            x: nextBaseX,
+            y: nextBaseY,
+            rotation: startAngle + 90,
+            scale: 1,
+            opacity: 1,
+            duration: 0.9,
+            ease: "back.out(1.5)",
+            onComplete: () => {
+                berry.dataset.angle = startAngle + 90;
+                berry.dataset.baseX = nextBaseX;
+                berry.dataset.baseY = nextBaseY;
+                berry.dataset.rx = 0;
+                berry.dataset.ry = 0;
+
+                completedBerries++;
+                if (completedBerries === berries.length) {
+                    isSwitching = false;
+                }
+            }
+        });
+    });
+}
+
+// Track berry states for smoothing — use typed arrays for perf
+const berryCount = allBerries.length;
+const berryState = {
+    rx: new Float32Array(berryCount),
+    ry: new Float32Array(berryCount),
+    angle: new Float32Array(berryCount),
+    baseX: new Float32Array(berryCount),
+    baseY: new Float32Array(berryCount),
+    cachedX: new Float32Array(berryCount),
+    cachedY: new Float32Array(berryCount),
+};
+
+// Initialize angles randomly
+for (let i = 0; i < berryCount; i++) {
+    berryState.angle[i] = Math.random() * 360;
+    // Keep dataset in sync for switchFlavor compatibility
+    allBerries[i].dataset.rx = 0; allBerries[i].dataset.ry = 0;
+    allBerries[i].dataset.angle = berryState.angle[i];
+    allBerries[i].dataset.baseX = 0; allBerries[i].dataset.baseY = 0;
+}
+
+// Cache berry positions periodically instead of per-frame getBoundingClientRect
+function cacheBerryPositions() {
+    allBerries.forEach((berry, i) => {
+        const rect = berry.getBoundingClientRect();
+        berryState.cachedX[i] = rect.left + rect.width / 2;
+        berryState.cachedY[i] = rect.top + rect.height / 2;
+    });
+}
+cacheBerryPositions();
+setInterval(cacheBerryPositions, 500); // Refresh cached positions every 500ms
+
+let mouse = { x: 0, y: 0, px: 0, py: 0 };
+let currentMouse = { x: 0, y: 0 };
+
+window.addEventListener('mousemove', (e) => {
+    mouse.x = (e.clientX / window.innerWidth) - 0.5;
+    mouse.y = (e.clientY / window.innerHeight) - 0.5;
+    mouse.px = e.clientX;
+    mouse.py = e.clientY;
+}, { passive: true });
+
+const heroCenter = document.querySelector('.hero-center');
+const allLeaves = document.querySelectorAll('.leaf');
+let isHeroVisible = true;
+let isScrolling = false;
+let scrollTimeout;
+let frameSkip = 0; // For throttling during scroll
+
+window.addEventListener('scroll', () => {
+    isScrolling = true;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+        frameSkip = 0;
+    }, 200);
+}, { passive: true });
+
+// Observer to deactivate WebGL compositing when off-screen
+const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        isHeroVisible = entry.isIntersecting;
+        const displayVal = isHeroVisible ? '' : 'none';
+        
+        if (leavesBG) leavesBG.style.display = displayVal;
+        if (berriesFG) berriesFG.style.display = displayVal;
+        if (berriesBG) berriesBG.style.display = displayVal;
+        if (heroCenter) heroCenter.style.display = displayVal;
+
+        // Pause/resume all model-viewers in hero for GPU savings
+        const heroMVs = document.querySelectorAll('.hero model-viewer, .hero-content model-viewer');
+        heroMVs.forEach(mv => {
+            if (isHeroVisible) {
+                mv.removeAttribute('data-paused');
+            } else {
+                mv.setAttribute('data-paused', '');
+            }
+        });
+    });
+}, { threshold: 0.01 });
+
+const heroSection = document.getElementById('home');
+if (heroSection) {
+    heroObserver.observe(heroSection);
+}
+
+function animate() {
+    if (!isHeroVisible) {
+        requestAnimationFrame(animate);
+        return;
+    }
+
+    // During scroll, skip 2 out of every 3 frames for heavy work
+    if (isScrolling) {
+        frameSkip++;
+        if (frameSkip % 3 !== 0) {
+            requestAnimationFrame(animate);
+            return;
+        }
+    }
+
+    const time = Date.now() * 0.001;
+
+    // Smoothly interpolate current mouse to target mouse
+    currentMouse.x += (mouse.x - currentMouse.x) * 0.05;
+    currentMouse.y += (mouse.y - currentMouse.y) * 0.05;
+
+    // Tilt the product can - Skip on scroll for performance
+    if (!isScrolling) {
+        modelViewer.cameraOrbit = `${(currentMouse.x * 40) + switchSpin}deg ${90 + (currentMouse.y * 20)}deg 380%`;
+    }
+
+    // Update parallax containers - skip during scroll
+    if (!isScrolling) {
+        berriesFG.style.transform = `translate(${currentMouse.x * 60}px, ${currentMouse.y * 60}px)`;
+        berriesBG.style.transform = `translate(${currentMouse.x * -30}px, ${currentMouse.y * -30}px)`;
+        leavesBG.style.transform = `translate(${currentMouse.x * -15}px, ${currentMouse.y * -15}px)`;
+    }
+
+    // Update each berry - ONLY IF NOT SWITCHING and NOT SCROLLING
+    if (!isSwitching && !isScrolling) {
+        for (let i = 0; i < berryCount; i++) {
+            const berry = allBerries[i];
+            // Use cached positions instead of getBoundingClientRect
+            const berryX = berryState.cachedX[i];
+            const berryY = berryState.cachedY[i];
+
+            const diffX = mouse.px - berryX;
+            const diffY = mouse.py - berryY;
+            const distance = Math.sqrt(diffX * diffX + diffY * diffY);
+
+            let targetRx = 0, targetRy = 0, speedMult = 1;
+
+            if (distance < 400) {
+                const force = (400 - distance) / 400;
+                targetRx = (diffX / distance) * force * -80;
+                targetRy = (diffY / distance) * force * -80;
+                speedMult = 1 + force * 5;
+            }
+
+            let rx = berryState.rx[i];
+            let ry = berryState.ry[i];
+            let angle = berryState.angle[i];
+            const baseX = berryState.baseX[i];
+            const baseY = berryState.baseY[i];
+
+            rx += (targetRx - rx) * 0.1;
+            ry += (targetRy - ry) * 0.1;
+            angle += 0.2 * speedMult;
+
+            berryState.rx[i] = rx;
+            berryState.ry[i] = ry;
+            berryState.angle[i] = angle;
+
+            // Keep dataset in sync for switchFlavor
+            berry.dataset.rx = rx;
+            berry.dataset.ry = ry;
+            berry.dataset.angle = angle;
+
+            // Floating effect
+            const dur = [5, 7, 6, 8, 5.5, 6.5, 9, 11, 10][i % 9];
+            const phase = (time + i * 0.7) * (Math.PI * 2 / dur);
+            const floatY = Math.sin(phase) * 15;
+            const floatAngle = Math.cos(phase) * 6;
+
+            berry.style.transform = `translate(calc(${rx + baseX}px), calc(${ry + baseY}px + ${floatY}px)) rotate(calc(${angle}deg + ${floatAngle}deg))`;
+        }
+    }
+
+    // Update leaves with float — skip during scroll
+    if (!isScrolling) {
+        allLeaves.forEach((leaf, i) => {
+            const dur = 10 + i * 2;
+            const phase = (time + i * 1.2) * (Math.PI * 2 / dur);
+            const floatY = Math.sin(phase) * 20;
+            const floatX = Math.cos(phase * 0.5) * 15;
+            const floatAngle = Math.sin(phase * 0.3) * 15;
+            leaf.style.transform = `translate(${floatX}px, ${floatY}px) rotate(${floatAngle}deg)`;
+        });
+    }
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+// Bubbles Generator — reduced spawn rate & max cap for performance
+const bubblesContainer = document.getElementById('bubbles-container');
+const MAX_BUBBLES = 8;
+let bubbleCount = 0;
+// Pre-cache the bubble image as a blob to avoid repeated network fetches
+let bubbleBlobUrl = null;
+(function preloadBubble() {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext('2d').drawImage(img, 0, 0);
+        c.toBlob(blob => { if (blob) bubbleBlobUrl = URL.createObjectURL(blob); });
+    };
+    img.src = 'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/bubble.png';
+})();
+
+function createBubble() {
+    if (!bubblesContainer || bubbleCount >= MAX_BUBBLES) return;
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble-img';
+    const size = Math.random() * 20 + 10;
+    bubble.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;bottom:-50px;opacity:${Math.random()*0.4+0.2};border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(255,255,255,0.1));`;
+
+    const duration = Math.random() * 6 + 4;
+    bubble.style.animation = `floatUpImg ${duration}s linear forwards`;
+
+    bubblesContainer.appendChild(bubble);
+    bubbleCount++;
+    setTimeout(() => { bubble.remove(); bubbleCount--; }, duration * 1000);
+}
+setInterval(createBubble, 2000);
+
+// Overlays and Cart Logic
+const overlayBackdrop = document.getElementById('overlay-backdrop');
+const cartPanel = document.getElementById('cart-panel');
+const checkoutModal = document.getElementById('checkout-modal');
+const contactModal = document.getElementById('contact-modal');
+const shopModal = document.getElementById('shop-modal');
+const cartBtn = document.querySelector('.cart-btn');
+const contactBtn = document.querySelector('.contact-btn');
+const headerShopBtn = document.getElementById('header-shop-btn');
+const closeCartBtn = document.getElementById('close-cart');
+const closeCheckoutBtn = document.getElementById('close-checkout');
+const closeContactBtn = document.getElementById('close-contact');
+const closeShopBtn = document.getElementById('close-shop');
+const goToCheckoutBtn = document.getElementById('go-to-checkout');
+const shopNowBtn = document.querySelector('.primary-btn');
+
+let cartItems = [];
+const PRICE = 2.99;
+
+function updateCartUI() {
+    const cartItemsContainer = document.getElementById('cart-items');
+    const checkoutItemsContainer = document.getElementById('checkout-items');
+    const badge = document.querySelector('.cart-badge');
+    
+    cartItemsContainer.innerHTML = '';
+    checkoutItemsContainer.innerHTML = '';
+    
+    let total = 0;
+    let itemCount = 0;
+    
+    cartItems.forEach((item, index) => {
+        total += item.price * item.quantity;
+        itemCount += item.quantity;
+        
+        const flavorDetails = {
+            classic: { title: 'Diet Classic', img: 'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Green%20Soda.png', filter: '' },
+            blue: { title: 'Zero Lime', img: 'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Blue%20Soda.png', filter: '' },
+            berry: { title: 'Berry Blush', img: 'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Green%20Soda.png', filter: 'filter: hue-rotate(240deg);' },
+            citrus: { title: 'Citrus Burst', img: 'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Green%20Soda.png', filter: 'filter: hue-rotate(60deg);' },
+            tropical: { title: 'Tropical Passion', img: 'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Blue%20Soda.png', filter: 'filter: hue-rotate(150deg);' }
+        };
+        const details = flavorDetails[item.flavor] || flavorDetails['classic'];
+        const imgSrc = details.img;
+        const title = details.title;
+        const imgStyle = details.filter;
+        
+        // Cart side panel item
+        cartItemsContainer.innerHTML += `
+            <div class="cart-item">
+                <img src="${imgSrc}" alt="${title}" style="${imgStyle}">
+                <div class="cart-item-details">
+                    <span class="cart-item-title">${title}</span>
+                    <span class="cart-item-price">$${item.price.toFixed(2)}</span>
+                </div>
+                <div class="cart-qty">
+                    <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                </div>
+            </div>
+        `;
+        
+        // Checkout summary item
+        checkoutItemsContainer.innerHTML += `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; align-items: center;">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <span style="background: rgba(255,255,255,0.1); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.75rem;">${item.quantity}</span>
+                    <span>${title}</span>
+                </div>
+                <span>$${(item.price * item.quantity).toFixed(2)}</span>
+            </div>
+        `;
+    });
+    
+    document.getElementById('cart-total-price').innerText = `$${total.toFixed(2)}`;
+    document.getElementById('checkout-total-price').innerText = `$${total.toFixed(2)}`;
+    
+    badge.innerText = itemCount;
+    if (itemCount > 0) {
+        badge.classList.add('has-items');
+    } else {
+        badge.classList.remove('has-items');
+    }
+}
+
+window.updateQty = function(index, change) {
+    cartItems[index].quantity += change;
+    if (cartItems[index].quantity <= 0) {
+        cartItems.splice(index, 1);
+    }
+    updateCartUI();
+};
+
+shopNowBtn.addEventListener('click', () => {
+    openModal(shopModal);
+});
+
+// Animations
+function openBackdrop() {
+    overlayBackdrop.classList.add('active');
+}
+function closeBackdrop() {
+    overlayBackdrop.classList.remove('active');
+}
+
+function openCart() {
+    openBackdrop();
+    gsap.to(cartPanel, {
+        right: 0,
+        duration: 0.6,
+        ease: "power3.out",
+        onStart: () => cartPanel.style.pointerEvents = 'auto'
+    });
+}
+
+function closeCart() {
+    const panelWidth = cartPanel.offsetWidth || 400;
+    gsap.to(cartPanel, {
+        right: -panelWidth,
+        duration: 0.4,
+        ease: "power2.in",
+        onComplete: () => {
+            cartPanel.style.pointerEvents = 'none';
+            if (checkoutModal.style.opacity == 0 && contactModal.style.opacity == 0 && shopModal.style.opacity == 0) closeBackdrop();
+        }
+    });
+}
+
+function openModal(modal) {
+    openBackdrop();
+    gsap.to(modal, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.5,
+        ease: "back.out(1.2)",
+        onStart: () => modal.style.pointerEvents = 'auto'
+    });
+}
+
+function closeModal(modal, closeBdrop = true) {
+    gsap.to(modal, {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.4,
+        ease: "power2.in",
+        onComplete: () => {
+            modal.style.pointerEvents = 'none';
+            if (closeBdrop) closeBackdrop();
+        }
+    });
+}
+
+cartBtn.addEventListener('click', openCart);
+closeCartBtn.addEventListener('click', () => closeCart());
+
+goToCheckoutBtn.addEventListener('click', () => {
+    if(cartItems.length === 0) return alert("Your cart is empty!");
+    closeCart();
+    openModal(checkoutModal);
+});
+closeCheckoutBtn.addEventListener('click', () => closeModal(checkoutModal));
+
+contactBtn.addEventListener('click', () => openModal(contactModal));
+closeContactBtn.addEventListener('click', () => closeModal(contactModal));
+
+headerShopBtn.addEventListener('click', () => openModal(shopModal));
+closeShopBtn.addEventListener('click', () => closeModal(shopModal));
+
+window.addToCart = function(flavor, price, btn) {
+    const existingItem = cartItems.find(item => item.flavor === flavor);
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cartItems.push({ flavor: flavor, price: price, quantity: 1 });
+    }
+    updateCartUI();
+    
+    if (btn) {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Added! ✓';
+        btn.style.background = '#fbcfe8';
+        btn.style.color = '#011d17';
+        btn.style.borderColor = '#fbcfe8';
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = '';
+            btn.style.color = '';
+            btn.style.borderColor = '';
+        }, 1200);
+    }
+};
+
+overlayBackdrop.addEventListener('click', () => {
+    closeCart();
+    closeModal(checkoutModal, false);
+    closeModal(contactModal, false);
+    closeModal(shopModal, false);
+    if (typeof policyModal !== 'undefined') closeModal(policyModal, false);
+    closeBackdrop();
+});
+
+document.getElementById('pay-now-btn').addEventListener('click', () => {
+    const btn = document.getElementById('pay-now-btn');
+    btn.innerHTML = 'Processing...';
+    setTimeout(() => {
+        btn.innerHTML = 'Payment Successful! ✓';
+        btn.style.background = '#0b8a78';
+        setTimeout(() => {
+            closeModal(checkoutModal);
+            cartItems = [];
+            updateCartUI();
+            btn.innerHTML = 'Pay Now';
+            btn.style.background = '';
+        }, 1500);
+    }, 1500);
+});
+
+document.getElementById('send-message-btn').addEventListener('click', () => {
+    const btn = document.getElementById('send-message-btn');
+    btn.innerHTML = 'Sending...';
+    setTimeout(() => {
+        btn.innerHTML = 'Message Sent! ✓';
+        btn.style.background = '#0b8a78';
+        setTimeout(() => {
+            closeModal(contactModal);
+            btn.innerHTML = 'Send Message';
+            btn.style.background = '';
+            document.querySelectorAll('#contact-modal input, #contact-modal textarea').forEach(el => el.value = '');
+        }, 1500);
+    }, 1500);
+});
+
+
+/* ---- GSAP SCROLLTRIGGER ANIMATIONS ---- */
+gsap.registerPlugin(ScrollTrigger);
+
+// Setup reveal animations for elements with .gs-reveal
+document.addEventListener('DOMContentLoaded', () => {
+    // Reveal individual elements or sections
+    const revealElements = document.querySelectorAll('.gs-reveal');
+    revealElements.forEach((el) => {
+        gsap.fromTo(el,
+            { opacity: 0, y: 50, visibility: 'hidden' },
+            {
+                opacity: 1,
+                y: 0,
+                visibility: 'visible',
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+    });
+
+    // CSS IntersectionObserver for performance-heavy grids
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            } else {
+                // Optional: remove if you want them to fade out again when scrolling up
+                entry.target.classList.remove('visible');
+            }
+        });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.css-reveal').forEach(el => observer.observe(el));
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('.nav-item').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if(href.startsWith('#')) {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if(target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    // Update active state
+                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            }
+        });
+    });
+});
+
+const policyModal = document.getElementById('policy-modal');
+const closePolicyBtn = document.getElementById('close-policy');
+const policyTitle = document.getElementById('policy-title');
+const policyContent = document.getElementById('policy-content');
+
+document.getElementById('footer-contact-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal(contactModal);
+});
+
+closePolicyBtn.addEventListener('click', () => closeModal(policyModal));
+
+const policies = {
+    privacy: {
+        title: 'Privacy Policy',
+        content: '<p>Your privacy is important to us. It is Pure Zero\'s policy to respect your privacy regarding any information we may collect from you across our website.</p><p>We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent.</p><p>We don\'t share any personally identifying information publicly or with third-parties, except when required to by law.</p>'
+    },
+    shipping: {
+        title: 'Shipping Policy',
+        content: '<p>All orders are processed within 1-2 business days. Orders are not shipped or delivered on weekends or holidays.</p><p>If we are experiencing a high volume of orders, shipments may be delayed by a few days. Please allow additional days in transit for delivery.</p><p>Shipping charges for your order will be calculated and displayed at checkout.</p>'
+    },
+    returns: {
+        title: 'Returns & Refunds',
+        content: '<p>You have 30 calendar days to return an item from the date you received it. To be eligible for a return, your item must be unused and in the same condition that you received it.</p><p>Once we receive your item, we will inspect it and notify you that we have received your returned item. We will immediately notify you on the status of your refund after inspecting the item.</p><p>If your return is approved, we will initiate a refund to your credit card (or original method of payment).</p>'
+    }
+};
+
+function openPolicy(type) {
+    policyTitle.innerText = policies[type].title;
+    policyContent.innerHTML = policies[type].content;
+    openModal(policyModal);
+}
+
+document.getElementById('footer-privacy-link').addEventListener('click', (e) => { e.preventDefault(); openPolicy('privacy'); });
+document.getElementById('footer-shipping-link').addEventListener('click', (e) => { e.preventDefault(); openPolicy('shipping'); });
+document.getElementById('footer-returns-link').addEventListener('click', (e) => { e.preventDefault(); openPolicy('returns'); });
+
+</script>
+</body>
+</html>
