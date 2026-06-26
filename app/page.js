@@ -107,6 +107,7 @@ function ShopCard({ flavor, title, desc, price, imgClass, imgSrc, onAddToCart })
         <div className="shop-card-footer">
           <span className="shop-card-price">${price.toFixed(2)}</span>
           <button 
+            type="button"
             className="shop-add-btn" 
             onClick={handleAdd}
             style={added ? { background: '#fbcfe8', color: '#011d17', borderColor: '#fbcfe8' } : {}}
@@ -405,9 +406,18 @@ export default function Home() {
                     }}
                   >
                     <img src="/assets/Green_Soda.png" alt="Diet Classic" />
-                    <div className="card-info">
-                      <span>Diet Classic</span>
-                      <span>$2.99</span>
+                    <div className="card-info" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                        <span>Diet Classic</span>
+                        <span>$2.99</span>
+                      </div>
+                      <button 
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); addToCart('classic', 2.99); }}
+                        style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '0.3rem', borderRadius: '50px', fontSize: '0.7rem', cursor: 'pointer', marginTop: '4px' }}
+                      >
+                        Add to Cart
+                      </button>
                     </div>
                   </div>
                   <div 
@@ -421,9 +431,18 @@ export default function Home() {
                     }}
                   >
                     <img src="/assets/Blue_Soda.png" alt="Zero Lime" style={{ filter: 'brightness(0.7)' }} />
-                    <div className="card-info">
-                      <span>Zero Lime</span>
-                      <span>$2.99</span>
+                    <div className="card-info" style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                        <span>Zero Lime</span>
+                        <span>$2.99</span>
+                      </div>
+                      <button 
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); addToCart('blue', 2.99); }}
+                        style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '0.3rem', borderRadius: '50px', fontSize: '0.7rem', cursor: 'pointer', marginTop: '4px' }}
+                      >
+                        Add to Cart
+                      </button>
                     </div>
                   </div>
                 </div>

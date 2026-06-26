@@ -18,28 +18,12 @@ function SodaCan({ flavor, ...props }) {
   const primitiveRef = useRef();
   const { viewport } = useThree();
   const [renderedFlavor, setRenderedFlavor] = useState(flavor);
-  const [staticScale, setStaticScale] = useState(null);
 
   const blueTexture = useTexture("/assets/blue_base_color.jpg");
   const greenTexture = useTexture("/assets/green_base_color.jpg");
 
-  const modelSize = useRef(1);
-  useEffect(() => {
-    const box = new THREE.Box3().setFromObject(scene);
-    const size = new THREE.Vector3();
-    box.getSize(size);
-    if (size.y > 0) {
-      modelSize.current = size.y;
-    }
-  }, [scene]);
-
-  // Lock scale on first render to prevent jumps on mobile scroll
-  useEffect(() => {
-    if (!staticScale && modelSize.current > 0) {
-      const baseDim = Math.min(viewport.width, viewport.height);
-      setStaticScale((baseDim / modelSize.current) * 2.2);
-    }
-  }, [viewport.width, viewport.height, staticScale]);
+  // Use a stable scale that looks good on both desktop and mobile
+  const scale = viewport.width < 4 ? 2.5 : 3.5;
 
   // Handle spin and flavor swap
   const spinY = useRef(0);
@@ -104,7 +88,6 @@ function SodaCan({ flavor, ...props }) {
     }
   });
 
-  const scale = staticScale || 2.2;
 
   return (
     <group {...props} ref={canRef} scale={scale} rotation={[0, Math.PI, 25 * Math.PI / 180]} dispose={null}>
