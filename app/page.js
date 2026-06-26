@@ -588,7 +588,7 @@ export default function Home() {
                         </div>
                         <div className="cart-qty">
                             <button className="qty-btn" onClick={() => updateQty(idx, -1)}>-</button>
-                            <span>{item.quantity}</span>
+                            <span className="qty-val">{item.quantity}</span>
                             <button className="qty-btn" onClick={() => updateQty(idx, 1)}>+</button>
                         </div>
                     </div>
