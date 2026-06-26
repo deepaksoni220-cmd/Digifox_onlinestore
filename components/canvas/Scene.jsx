@@ -23,7 +23,7 @@ function SodaCan({ flavor, ...props }) {
   const greenTexture = useTexture("/assets/green_base_color.jpg");
 
   // Use a stable scale that looks good on both desktop and mobile
-  const scale = viewport.width < 4 ? 2.5 : 3.5;
+  const scale = viewport.width < 4 ? 4 : 5;
 
   // Handle spin and flavor swap
   const spinY = useRef(0);
@@ -89,13 +89,17 @@ function SodaCan({ flavor, ...props }) {
   });
 
 
-  return (
-    <group {...props} ref={canRef} scale={scale} rotation={[0, Math.PI, 25 * Math.PI / 180]} dispose={null}>
-      <Center>
-        <primitive object={scene} ref={primitiveRef} />
-      </Center>
-    </group>
-  );
+ return (
+  <group
+    {...props}
+    ref={canRef}
+    scale={scale}
+    rotation={[0, Math.PI, 25 * Math.PI / 180]}
+    dispose={null}
+  >
+    <primitive object={scene} ref={primitiveRef} scale={9} />
+  </group>
+);
 }
 
 function FloatingItem({ url, position, scale, rotation, speed = 1, floatIntensity = 1, rotationIntensity = 1 }) {
@@ -135,7 +139,7 @@ export default function Scene({ flavor = 'green' }) {
   return (
     <div className="hero-center" style={{ pointerEvents: 'none' }}>
       <div className="main-product-3d" style={{ pointerEvents: 'auto' }}>
-        <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 2]}>
+        <Canvas camera={{ position: [0, 0, 9], fov: 40 }} dpr={[1, 2]}>
           <ambientLight intensity={0.5} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
           <pointLight position={[-10, -10, -10]} intensity={0.5} />

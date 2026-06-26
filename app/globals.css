@@ -437,7 +437,7 @@ body.blue-theme {
 .product-carousel {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2.5rem;
     align-items: flex-end;
     pointer-events: auto; /* Enable interaction */
 }
@@ -861,12 +861,12 @@ body.blue-theme {
 
     .main-title {
         order: 1 !important;
-        margin-bottom: 0.8rem !important;
+        margin-bottom: 0.2rem !important;
     }
 
     .description {
         order: 2 !important;
-        margin-bottom: 1.5rem !important;
+        margin-bottom: 1rem !important;
     }
 
     /* HERO CENTER: 3D Can */
@@ -1121,8 +1121,8 @@ body.blue-theme {
 
 /* ========== SMALL PHONE (≤480px) ========== */
 @media (max-width: 480px) {
-    .hero-center { height: 50vh !important; max-height: 50vh !important; }
-    .main-product-3d { height: 50vh !important; max-height: 50vh !important; }
+    .hero-center { height: 40vh !important; max-height: 40vh !important; margin-top: -2.6rem !important; margin-bottom: -3rem !important; }
+    .main-product-3d { height: 40vh !important; max-height: 40vh !important; }
     .main-title, .side-title { font-size: clamp(2.2rem, 14vw, 3rem); }
     .description { font-size: 0.8rem; }
     .hero-left { gap: 0.6rem; }
